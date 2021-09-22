@@ -10,6 +10,36 @@ function App() {
   const map = useRef(null);
 
   const [guessed, setGuessed] = useState([]);
+  const [guess, setGuess] = useState("");
+
+  const handleChange = ({target}) => {
+    setGuess(target.value);
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const result = isocodes.filter(c => c.Country === guess);
+    console.log("reuslt", result);
+
+    if (result.length) {
+      const guessIso = result[0]["Alpha-3 code"];
+      console.log("guessed:", guessed);
+      const isNewGuess = guessed.filter(g => g === guessIso).length === 0;
+      if(isNewGuess) {
+        console.log("new", guessIso);
+        setGuessed(prev => [guessIso, ...prev]);
+      }
+    }
+    setGuess("");
+  }
+
+  useEffect(() => {
+    if(guessed.length === 0) return;
+    map.current.setFilter('country-boundaries', [
+        "in",
+        "iso_3166_1_alpha_3", ...guessed
+      ]);
+  }, [guessed]);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -17,8 +47,6 @@ function App() {
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v8'
     });
-
-    console.log(isocodes);
 
     map.current.on('load', function() {
       map.current.addLayer({
@@ -34,12 +62,9 @@ function App() {
           'fill-opacity': 0.4,
         },
       });
-
       map.current.setFilter('country-boundaries', [
         "in",
-        "iso_3166_1_alpha_3",
-        'NLD',
-        'ITA'
+        "iso_3166_1_alpha_3", ...guessed
       ]);
     });
 
@@ -49,6 +74,9 @@ function App() {
     <div className="App">
       <div>
         <div ref={mapContainer} className="map-container" />
+        <form onSubmit={handleSubmit} id="form">
+          <input value={guess} onChange={handleChange} type="text"></input>
+        </form>
       </div>
     </div>
   );
