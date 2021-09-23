@@ -1,5 +1,7 @@
 import './App.css';
 import StartScreen from './components/StartScreen';
+import EndScreen from './components/EndScreen';
+import Timer from './components/Timer';
 
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
@@ -12,10 +14,23 @@ function App() {
   const map = useRef(null);
 
   const [started, setStarted] = useState(false);
+  const [ended, setEnded] = useState(false);
+
   const [guessed, setGuessed] = useState([]);
   const [guess, setGuess] = useState("");
 
   const startGame = () => {
+    setStarted(true);
+  }
+
+  const endGame = () => {
+    setEnded(true);
+  }
+
+  const restartGame = () => {
+    setGuessed([]);
+    setGuess("");
+    setEnded(false);
     setStarted(true);
   }
 
@@ -80,11 +95,15 @@ function App() {
 
   return (
     <div className="App">
-    { !started && <StartScreen startGame={startGame}/>}
-      <div ref={mapContainer} className="map-container" />
-      <form onSubmit={handleSubmit} id="form">
-        <input value={guess} onChange={handleChange} type="text"></input>
-      </form>
+      { !started && <StartScreen startGame={startGame}/>}
+      { started && !ended && <Timer endGame={endGame}/>}
+      { ended && <EndScreen restartGame={restartGame} score={guessed.length}/>}
+      <div className="game">
+        <div ref={mapContainer} className="map-container" />
+        <form onSubmit={handleSubmit} id="form">
+          <input value={guess} onChange={handleChange} type="text"></input>
+        </form>
+      </div>
     </div>
   );
 }
