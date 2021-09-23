@@ -2,6 +2,7 @@ import './App.css';
 import StartScreen from './components/StartScreen';
 import EndScreen from './components/EndScreen';
 import Timer from './components/Timer';
+import Guesses from './components/Guesses';
 
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
@@ -53,6 +54,7 @@ function App() {
   }
 
   useEffect(() => {
+    if (!map.current) return;
     map.current.setFilter('country-boundaries', [
         "in",
         "iso_3166_1_alpha_3", ...guessed
@@ -94,15 +96,19 @@ function App() {
 
   return (
     <div className="App">
+      <div className="sidebar">
+        <p>Timer</p>
+        { started && !ended && <Timer endGame={endGame}/>}
+      </div>
       { !started && <StartScreen startGame={startGame}/>}
-      { started && !ended && <Timer endGame={endGame}/>}
       { ended && <EndScreen restartGame={restartGame} score={guessed.length}/>}
       <div className="game">
         <div ref={mapContainer} className="map-container" />
         <form onSubmit={handleSubmit} id="form">
-          <input value={guess} onChange={handleChange} type="text"></input>
+          <input value={guess} onChange={handleChange} type="text" id="guess-input" placeholder="country" autocomplete="off"></input>
         </form>
       </div>
+      <Guesses className="sidebar" countries={guessed}></Guesses>
     </div>
   );
 }

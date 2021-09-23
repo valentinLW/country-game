@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const Timer = ({endGame}) => {
-  const [time, setTime] = useState(10);
+  const [time, setTime] = useState(30);
 
   useEffect(() => {
     if(time === 0) endGame();
