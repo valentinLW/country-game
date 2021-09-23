@@ -19,14 +19,11 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = isocodes.filter(c => c.Country === guess);
-    console.log("reuslt", result);
 
     if (result.length) {
       const guessIso = result[0]["Alpha-3 code"];
-      console.log("guessed:", guessed);
       const isNewGuess = guessed.filter(g => g === guessIso).length === 0;
       if(isNewGuess) {
-        console.log("new", guessIso);
         setGuessed(prev => [guessIso, ...prev]);
       }
     }
@@ -45,8 +42,11 @@ function App() {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/valentinlw/cktwudgju14ns18mck5e2nuit',
+      style: 'mapbox://styles/valentinlw/cktwuv20b155e18mcotpk3apf',
       zoom: 1,
+      minZoom: 1,
+      maxZoom: 1,
+      center: [1, 1],
       renderWorldCopies: false,
     });
 
@@ -61,7 +61,6 @@ function App() {
         type: 'fill',
         paint: {
           'fill-color': '#d2361e',
-          'fill-opacity': 0.4,
         },
       });
       map.current.setFilter('country-boundaries', [
@@ -69,7 +68,6 @@ function App() {
         "iso_3166_1_alpha_3", ...guessed
       ]);
     });
-
   });
 
   return (
