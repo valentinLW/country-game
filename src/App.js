@@ -53,7 +53,6 @@ function App() {
   }
 
   useEffect(() => {
-    if(guessed.length === 0) return;
     map.current.setFilter('country-boundaries', [
         "in",
         "iso_3166_1_alpha_3", ...guessed
