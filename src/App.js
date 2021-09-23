@@ -45,7 +45,9 @@ function App() {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v8'
+      style: 'mapbox://styles/valentinlw/cktwudgju14ns18mck5e2nuit',
+      zoom: 1,
+      renderWorldCopies: false,
     });
 
     map.current.on('load', function() {
@@ -72,12 +74,10 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        <div ref={mapContainer} className="map-container" />
-        <form onSubmit={handleSubmit} id="form">
-          <input value={guess} onChange={handleChange} type="text"></input>
-        </form>
-      </div>
+      <div ref={mapContainer} className="map-container" />
+      <form onSubmit={handleSubmit} id="form">
+        <input value={guess} onChange={handleChange} type="text"></input>
+      </form>
     </div>
   );
 }
