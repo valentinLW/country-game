@@ -1,4 +1,6 @@
 import './App.css';
+import StartScreen from './components/StartScreen';
+
 import { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import isocodes from './isocodes.json'
@@ -9,8 +11,13 @@ function App() {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
+  const [started, setStarted] = useState(false);
   const [guessed, setGuessed] = useState([]);
   const [guess, setGuess] = useState("");
+
+  const startGame = () => {
+    setStarted(true);
+  }
 
   const handleChange = ({target}) => {
     setGuess(target.value);
@@ -48,6 +55,7 @@ function App() {
       maxZoom: 1,
       center: [1, 1],
       renderWorldCopies: false,
+      interactive: false,
     });
 
     map.current.on('load', function() {
@@ -72,6 +80,7 @@ function App() {
 
   return (
     <div className="App">
+    { !started && <StartScreen startGame={startGame}/>}
       <div ref={mapContainer} className="map-container" />
       <form onSubmit={handleSubmit} id="form">
         <input value={guess} onChange={handleChange} type="text"></input>
