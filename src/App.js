@@ -2,9 +2,9 @@ import './App.css';
 import StartScreen from './components/StartScreen';
 import EndScreen from './components/EndScreen';
 import Timer from './components/Timer';
-import Guesses from './components/Guesses';
 import Map from './components/Map';
 import GuessForm from './components/GuessForm';
+import Guesses from './components/Guesses';
 
 import { useState } from 'react';
 
@@ -14,9 +14,6 @@ function App() {
 
   const [started, setStarted] = useState(false);
   const [ended, setEnded] = useState(false);
-
-  const [guessed, setGuessed] = useState([]);
-  const [guess, setGuess] = useState("");
 
   const startGame = () => {
     setStarted(true);
@@ -33,11 +30,16 @@ function App() {
     setStarted(true);
   }
 
+  const [guessed, setGuessed] = useState([]);
+  const [guess, setGuess] = useState("");
+
   const handleChange = ({target}) => {
+    if(ended) return;
     setGuess(target.value);
   }
 
   const handleSubmit = (e) => {
+    if(ended) return;
     e.preventDefault();
     const result = isocodes.filter(c => c.Country === guess);
 
@@ -53,12 +55,11 @@ function App() {
 
   return (
     <div className="App">
-      <div className="sidebar">
-        <p>Timer</p>
-        { started && !ended && <Timer endGame={endGame}/>}
-      </div>
       { !started && <StartScreen startGame={startGame}/>}
       { ended && <EndScreen restartGame={restartGame} score={guessed.length}/>}
+      <div className="sidebar">
+        { started && !ended && <Timer endGame={endGame}/>}
+      </div>
       <div className="game">
         <Map guessed={guessed}/>
         <GuessForm guess={guess} handleChange={handleChange} handleSubmit={handleSubmit}/>

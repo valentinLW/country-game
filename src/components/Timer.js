@@ -10,7 +10,7 @@ const Timer = ({endGame}) => {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [time, endGame]);
+  }, [time]);
 
   return (
     <div className="timer">
