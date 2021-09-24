@@ -4,13 +4,16 @@ const Timer = ({endGame}) => {
   const [time, setTime] = useState(30);
 
   useEffect(() => {
-    if(time === 0) endGame();
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
       setTime((prev) => prev - 1);
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, [time]);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if(time === 0) endGame();
+  }, [time, endGame]);
 
   return (
     <div className="timer">
