@@ -28,9 +28,10 @@ const Map = ({guessed}) => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/valentinlw/cktwuv20b155e18mcotpk3apf',
-      zoom: 1,
+      zoom: 1.6,
+      minZoom: 1.6,
       center: [1, 1],
-      renderWorldCopies: false,
+      renderWorldCopies: true,
       interactive: true,
     });
 
