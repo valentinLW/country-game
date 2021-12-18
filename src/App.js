@@ -4,7 +4,6 @@ import EndScreen from './components/EndScreen';
 import Timer from './components/Timer';
 import Map from './components/Map';
 import GuessForm from './components/GuessForm';
-import Guesses from './components/Guesses';
 
 import { useState } from 'react';
 
@@ -64,7 +63,6 @@ function App() {
         <Map guessed={guessed}/>
         <GuessForm guess={guess} handleChange={handleChange} handleSubmit={handleSubmit}/>
       </div>
-      <Guesses className="sidebar" countries={guessed}></Guesses>
     </div>
   );
 }

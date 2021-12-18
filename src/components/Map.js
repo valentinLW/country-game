@@ -11,9 +11,15 @@ const Map = ({guessed}) => {
 
   useEffect(() => {
     if (!map.current) return;
-    map.current.setFilter('country-boundaries', [
+
+      map.current.setFilter('country-boundaries', [
         "in",
         "iso_3166_1_alpha_3", ...guessed
+      ]);
+
+      map.current.setFilter('country-boundaries2', [
+        "in",
+        "iso_3166_1_alpha_3", ...guessed.slice(1)
       ]);
   }, [guessed]);
 
@@ -23,11 +29,9 @@ const Map = ({guessed}) => {
       container: mapContainer.current,
       style: 'mapbox://styles/valentinlw/cktwuv20b155e18mcotpk3apf',
       zoom: 1,
-      minZoom: 1,
-      maxZoom: 1,
       center: [1, 1],
       renderWorldCopies: false,
-      interactive: false,
+      interactive: true,
     });
 
     map.current.on('load', function() {
@@ -43,9 +47,25 @@ const Map = ({guessed}) => {
           'fill-color': '#d2361e',
         },
       });
+      map.current.addLayer({
+        id: 'country-boundaries2',
+        source: {
+          type: 'vector',
+          url: 'mapbox://mapbox.country-boundaries-v1',
+        },
+        'source-layer': 'country_boundaries',
+        type: 'fill',
+        paint: {
+          'fill-color': '#ff7e30',
+        },
+      });
       map.current.setFilter('country-boundaries', [
         "in",
         "iso_3166_1_alpha_3", ...guessed
+      ]);
+      map.current.setFilter('country-boundaries2', [
+        "in",
+        "iso_3166_1_alpha_3", ...guessed.slice(1)
       ]);
     });
   });
